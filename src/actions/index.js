@@ -23,8 +23,9 @@ export function signinUser({email, password}) {
                 dispatch({type: AUTH_USER});
                 //-save the JWT token
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('userId', response.data.id);
                 //-redirect to the route '/feature'
-                browserHistory.push('/feature');
+                browserHistory.push('/');
             })
             .catch(() => {
             //If request is bad...
@@ -40,12 +41,12 @@ export function signupUser({email, password}) {
         .then(response => {
             //if request is good....
             //-update state to indicate user is authenticated
-            console.log(response)
             dispatch({type: AUTH_USER});
             //-save the JWT token
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('userId', response.data.id);
             //-redirect to the route '/feature'
-            browserHistory.push('/feature');
+            browserHistory.push('/');
         })
         .catch(e => dispatch(authError(e.response.data.error)));
             
@@ -61,6 +62,7 @@ export function authError(error) {
 
 export function signoutUser() {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     return {type: UNAUTH_USER};
 }
 
@@ -85,8 +87,15 @@ export function submitOnlineImage(imgString) {
 }
 
 export function submitLocalImage(imgFile) {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
     return function(dispatch) {
-        
-        console.log('file from local computer' + imgFile);
+        const formData = new FormData();
+        formData.append('file', imgFile)
+        formData.append('userId', userId);
+        axios.post(`${ROOT_URL}/localupload`, formData)
+            .then(response => {
+                console.log(response);
+            })
     }
 }

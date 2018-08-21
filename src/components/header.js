@@ -5,10 +5,14 @@ import * as actions from '../actions';
 class Header extends Component {
     renderLinks() {
         if(this.props.authenticated) {
-            //show link to sign out
-            return  <li className="nav-item">
+            const userId = localStorage.getItem('userId');
+            return [ <li className="nav-item" key={0}>
                         <Link className="nav-link" to="/signout">Sign Out</Link>
-                    </li>
+                    </li>,
+                    <li className="nav-item" key={2}>
+                    <Link className="nav-link" to={'/user/'+userId}>My Profile</Link>
+                </li> ];
+
         }
         else {
             //show link to sign in and sign up

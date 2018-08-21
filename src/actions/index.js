@@ -6,7 +6,14 @@ import {
     UNAUTH_USER,
     FETCH_MESSAGE,
     SUBMIT_IMAGE_FROM_LOCAL,
-    SUBMIT_IMAGE_FROM_ONLINE
+    SUBMIT_IMAGE_FROM_ONLINE,
+    LOAD_ALL_POSTS,
+    LOAD_USER_PROFILE,
+    SUBMIT_IMAGE_ERROR,
+    FILTER_USER_POSTS,
+    SUBMIT_LIKE,
+    SUBMIT_LIKE_ERROR,
+    DELETE_POST
 
 } from './types';
 const ROOT_URL = 'http://localhost:3090';
@@ -66,26 +73,90 @@ export function signoutUser() {
     return {type: UNAUTH_USER};
 }
 
-export function fetchMessage() {
+
+
+export function loadAllPosts() {
     return function(dispatch) {
-        axios.get(ROOT_URL, {
-            headers: { authorization: localStorage.getItem('token') }
-        })
-            .then(response => {
+        axios.get(`${ROOT_URL}/all-posts`)
+            .then((response) => {
                 dispatch({
-                    type: FETCH_MESSAGE,
-                    payload: response.data.message
+                    type: LOAD_ALL_POSTS,
+                    payload: response.data['data']
                 })
             })
     }
 }
 
+export function loadUserProfile() {
+    return function(dispatch) {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        axios.get(`${ROOT_URL}/user/${userId}`, {
+            headers: { authorization: token }})
+            .then(response => {
+                console.log(response.data)
+                dispatch({
+                    type: LOAD_USER_PROFILE,
+                    payload: response.data['data']
+                })
+            })
+        }
+    }
+
+export function filterUserPosts() {
+    let url = window.location.pathname;
+    let ownerOfPosts = url.substring(url.lastIndexOf('/') + 1);
+    
+        return function(dispatch) {
+            axios.get(`${ROOT_URL}/user-content/${ownerOfPosts}`)
+            .then(response => {
+                dispatch({
+                    type: FILTER_USER_POSTS,
+                    payload: response.data['data']
+                })
+            })
+        
+    }
+  
+    
+}
 export function submitOnlineImage(imgString) {
     return function(dispatch) {
         console.log('submitted image from internet ' + imgString);
     }
 }
 
+export function onLike(postId) {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    if(!token) {
+        browserHistory.push(`/sign-up`);
+    }
+    else {
+        return function(dispatch) {
+            axios.post(`${ROOT_URL}/like-post`, {postId, userId}, {
+                headers: { authorization: token }})
+
+                .then(response => {
+                    if(response.data['error']) {
+                        dispatch({
+                            type: SUBMIT_LIKE_ERROR,
+                            payload: response.data
+                        })
+                    }
+                    else {
+                        dispatch({
+                            type: SUBMIT_LIKE,
+                            payload: response.data['data']
+                        })
+                    }
+                    
+                    
+                })
+        }
+    }
+ 
+}
 export function submitLocalImage(imgFile) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
@@ -93,9 +164,35 @@ export function submitLocalImage(imgFile) {
         const formData = new FormData();
         formData.append('file', imgFile)
         formData.append('userId', userId);
-        axios.post(`${ROOT_URL}/localupload`, formData)
+        axios.post(`${ROOT_URL}/localupload`, formData, {
+            headers: { authorization: token }})
             .then(response => {
-                console.log(response);
+                if( typeof response.data['data']=== 'string') {
+                    dispatch({
+                        type: SUBMIT_IMAGE_ERROR,
+                        payload: response.data['data']
+                    })
+                }
+                dispatch({
+                    type: SUBMIT_IMAGE_FROM_LOCAL,
+                    payload: response.data['data']
+                })
             })
+    }
+}
+
+export function deletePost(postId) {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    return function(dispatch) {
+        axios.post(`${ROOT_URL}/delete-post`, {postId, userId}, {
+           headers:{authorization: token}})
+           .then(response => {
+               console.log(response)
+               dispatch({
+                   type: DELETE_POST,
+                   payload: response.data['data']
+               })
+           })
     }
 }

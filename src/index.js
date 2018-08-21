@@ -8,9 +8,10 @@ import App from './components/app';
 import Signin from './components/auth/sign-in';
 import Signout from './components/auth/sign-out';
 import Signup from './components/auth/sign-up';
-import Feature from './components/feature';
 import RequireAuth from './components/auth/require_auth';
 import ProfileContainer from './components/profile/profile-container';
+import AllPostsContainer from './components/all-posts/all-posts-container';
+import FilteredContainer from './components/filtered-user/filtered-container';
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
@@ -26,11 +27,12 @@ ReactDOM.render(
   <Provider store={store}>
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={ProfileContainer}/>
+      <IndexRoute component={AllPostsContainer}/>
       <Route path="signin" component={Signin}/>
       <Route path="signout" component={Signout}/>
       <Route path="signup" component={Signup}/>
-      <Route path="feature" component={RequireAuth(Feature)}/>
+      <Route path="user-content/:name" component={FilteredContainer}/>
+      <Route path="user/:id" component={RequireAuth(ProfileContainer)}/>
     </Route>
   </Router>
   </Provider>

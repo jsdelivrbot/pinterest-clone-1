@@ -29,7 +29,7 @@ class Signup extends Component {
         return (
             <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
                 <fieldset className="form-group">
-                    <label>Email</label>
+                    <label>Username</label>
                     <input className="form-control" {...email}/>
                     {email.touched && email.error && <div className="error">{email.error}</div>}
                 </fieldset>

@@ -15,7 +15,7 @@ import {
     DELETE_POST
 
 } from './types';
-const ROOT_URL = 'http://localhost:3090';
+const ROOT_URL = 'https://morning-beyond-12420.herokuapp.com';
 
 export function signinUser({email, password}) {
     //redux thunk is allowing us to return a function from an action creator instead of an action object

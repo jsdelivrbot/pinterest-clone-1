@@ -17,7 +17,7 @@ class UserLike extends Component {
                     <p role="alert" className="error">{this.props.error}</p>
                     <img className="img-responsive" width="300" src={this.props.image} alt=""/>
                     <div className="post-meta-container">
-                        <p>Submitted By: <Link to={"/user/"+this.props.userId}>{this.props.email}</Link> Number of likes so far {this.props.numLikes}</p>
+                        <p>Submitted By: <Link to={"/user-content/"+this.props.userId}>{this.props.email}</Link> Number of likes so far {this.props.numLikes}</p>
                         <button className="btn btn-danger" onClick={this.likePost} value={this.props.id}>Unlike Post</button>
                     </div>
                 </div>  

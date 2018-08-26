@@ -69,6 +69,7 @@ export function authError(error) {
 export function signoutUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    browserHistory.push('/');
     return {type: UNAUTH_USER};
 }
 
@@ -93,7 +94,6 @@ export function loadUserProfile() {
         axios.get(`${ROOT_URL}/user/${userId}`, {
             headers: { authorization: token }})
             .then(response => {
-                console.log(response.data)
                 dispatch({
                     type: LOAD_USER_PROFILE,
                     payload: response.data['data']
@@ -144,7 +144,7 @@ export function onLike(postId) {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
     if(!token) {
-        browserHistory.push(`/sign-up`);
+        browserHistory.push(`/signup`);
     }
     else {
         return function(dispatch) {
@@ -159,7 +159,6 @@ export function onLike(postId) {
                         })
                     }
                     else {
-                        console.log(response.data)
                         dispatch({
                             type: SUBMIT_LIKE,
                             payload: response.data
@@ -203,7 +202,6 @@ export function deletePost(postId) {
         axios.post(`${ROOT_URL}/delete-post`, {postId, userId}, {
            headers:{authorization: token}})
            .then(response => {
-               console.log(response)
                dispatch({
                    type: DELETE_POST,
                    payload: response.data['data']

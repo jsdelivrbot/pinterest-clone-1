@@ -33,7 +33,6 @@ class ProfileContainer extends Component {
     }
  
     render() {
-        console.log(this.props.userLikes)
         if(this.props.loadingUserProfile) {
             return (
                 <div>
@@ -51,14 +50,10 @@ class ProfileContainer extends Component {
                 )
                 
             })
-            let userLikes;
-            if(!this.props.userLikes.length) {
-
-                userLikes =[];
-            }
             
-            else {
-               userLikes = this.props.userLikes.map((post, i) => {
+            
+           
+              let userLikes = this.props.userLikes.map((post, i) => {
                     return (
                         <UserLike key={i}
                               image={post.post.image}
@@ -69,21 +64,36 @@ class ProfileContainer extends Component {
                     )
                     
                 })
-            }
+            
            
             return (
                 <div>
-                    <h1>Create a new post</h1>
-                    <p role="alert" className="error">{this.props.submissionError}</p>
-                    <PostImageForm
-                        onlineChange={this.handleOnlineChange}
-                        submitOnline={this.submitOnline}
-                        localFileChange={this.handleLocalChange}
-                        submitLocal={this.submitLocal}/>
-                    <h2>Your Posts</h2>
-                    {posts}
-                    <h2>Your Likes</h2>
-                    {userLikes}
+                    <h1 className="text-center">Welcome, {this.props.userName}!</h1>
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <h3 className="text-center margin-35px">Create a new post</h3>
+                                <p role="alert" className="error">{this.props.submissionError}</p>
+                                <PostImageForm
+                                    onlineChange={this.handleOnlineChange}
+                                    submitOnline={this.submitOnline}
+                                    localFileChange={this.handleLocalChange}
+                                    submitLocal={this.submitLocal}/>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <h2>Your Posts</h2>
+                                <div className="post-container">
+                                {posts}
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <h2>Your Likes</h2>
+                                <div className="post-container">
+                                    {userLikes}
+                                </div>
+                            </div>
+                        </div>
                 </div>
             )
          }

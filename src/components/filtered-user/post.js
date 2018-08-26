@@ -13,11 +13,13 @@ class Post extends Component {
     }
     render() {
         return (
-                <div className="post-container">
-                    <span>{this.props.error}</span>
-                    <img src={this.props.image} alt=""/>
-                    <span>Number of likes so far {this.props.numLikes}</span>
-                    <button className="btn btn-default" onClick={this.likePost} value={this.props.id}>Like</button>
+                <div className="content-container">
+                    <p role="alert" className="error">{this.props.error}</p>
+                    <img className="img-responsive" width="300" src={this.props.image} alt=""/>
+                    <div className="post-meta-container">
+                        {!this.props.numLikes ? <p>No likes yet</p>: <p>Number of likes so far {this.props.numLikes}</p>}
+                        <button className="btn btn-success" onClick={this.likePost} value={this.props.id}>Like</button>
+                    </div>
                 </div>  
          )
            

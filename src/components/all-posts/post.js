@@ -17,23 +17,25 @@ class Post extends Component {
     render() {
         if(this.state.currentUser !== this.props.userId) {
             return (
-                <div className="post-container">
-                    <span>{this.props.error}</span>
-                    <img src={this.props.image} alt=""/>
-                    <h3>Submitted By: <Link to={"/user-content/"+this.props.userId}>{this.props.email}</Link></h3>
-                    <span>Number of likes so far {this.props.numLikes}</span>
-                    <button className="btn btn-default" onClick={this.likePost} value={this.props.id}>Like</button>
+                <div className="content-container">
+                    <p role="alert" className="error">{this.props.error}</p>
+                    <img className="img-responsive"  width="300"src={this.props.image} alt=""/>
+                    <div className="post-meta-container">
+                        <p className="text-center">Submitted By: <Link to={"/user-content/"+this.props.userId}>{this.props.email}</Link> {!this.props.numLikes ? <span>No likes yet</span>: <span>Number of likes so far {this.props.numLikes}</span>}</p>
+                        <button className="btn btn-success" onClick={this.likePost} value={this.props.id}>Like</button>
+                    </div>
                 </div>  
          )
         }
          else {
             return (
-                <div className="post-container">
-                    <span>{this.props.error}</span>
-                    <img src={this.props.image} alt=""/>
-                    <h3>Submitted By: <Link to={"/user/"+this.props.userId}>{this.props.email}</Link></h3>
-                    <span>Number of likes so far {this.props.numLikes}</span>
-                    <button className="btn btn-default" onClick={this.likePost} value={this.props.id}>Like</button>
+                <div className="content-container">
+                   <p role="alert" className="error">{this.props.error}</p>
+                    <img className="img-responsive"  width="300"src={this.props.image} alt=""/>
+                    <div className="post-meta-container">
+                        <p className="text-center">Submitted By: <Link to={"/user/"+this.props.userId}>{this.props.email}</Link> {!this.props.numLikes ? <span>No likes yet</span>: <span>Number of likes so far {this.props.numLikes}</span>}</p>
+                        <button className="btn btn-success" onClick={this.likePost} value={this.props.id}>Like</button>
+                    </div>
                 </div>  
             )
         }

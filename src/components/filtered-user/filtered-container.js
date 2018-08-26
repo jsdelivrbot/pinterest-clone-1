@@ -24,8 +24,10 @@ class FilteredContainer extends Component {
         })
         return (
             <div>
-            <h1>{this.props.userName}'s Content</h1>
-                {posts}
+                <h1 className="text-center margin-35px">{this.props.userName}'s Content</h1>
+                <div className="post-container">
+                    {posts}
+                </div>
             </div>
         )
     }

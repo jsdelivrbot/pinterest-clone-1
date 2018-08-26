@@ -58,7 +58,6 @@ export default function(state = {allPostsList: [], loadingPosts: true, userPosts
                 return post;
             })
         let updatedUserLikes = action.payload.updatedUser.userLikes;
-
             return {...state, allPostsList: updatedAllPostsList, filteredUserPosts: updatedFilteredUserPosts, userLikes: updatedUserLikes};
 
         case DELETE_POST:

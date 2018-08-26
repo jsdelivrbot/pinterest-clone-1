@@ -32,6 +32,7 @@ class Signin extends Component {
             </fieldset>
             {this.renderAlert()}
             <button action="submit" className="btn btn-primary">Sign In</button>
+            <p>Don't have an account yet? <a href="/signup">Create an account instead.</a></p>
         </form>
        );
     }

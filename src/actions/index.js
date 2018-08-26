@@ -5,8 +5,7 @@ import {
     AUTH_ERROR,
     UNAUTH_USER,
     FETCH_MESSAGE,
-    SUBMIT_IMAGE_FROM_LOCAL,
-    SUBMIT_IMAGE_FROM_ONLINE,
+    SUBMIT_IMAGE,
     LOAD_ALL_POSTS,
     LOAD_USER_PROFILE,
     SUBMIT_IMAGE_ERROR,
@@ -121,8 +120,23 @@ export function filterUserPosts() {
     
 }
 export function submitOnlineImage(imgString) {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
     return function(dispatch) {
-        console.log('submitted image from internet ' + imgString);
+        axios.post(`${ROOT_URL}/online-image`, {imgString, userId}, {
+            headers: { authorization: token }})
+            .then(response => {
+            if( typeof response.data['data']=== 'string') {
+                dispatch({
+                    type: SUBMIT_IMAGE_ERROR,
+                    payload: response.data['data']
+                })
+            }
+            dispatch({
+                type: SUBMIT_IMAGE,
+                payload: response.data['data']
+            })
+        })
     }
 }
 
@@ -145,9 +159,10 @@ export function onLike(postId) {
                         })
                     }
                     else {
+                        console.log(response.data)
                         dispatch({
                             type: SUBMIT_LIKE,
-                            payload: response.data['data']
+                            payload: response.data
                         })
                     }
                     
@@ -174,7 +189,7 @@ export function submitLocalImage(imgFile) {
                     })
                 }
                 dispatch({
-                    type: SUBMIT_IMAGE_FROM_LOCAL,
+                    type: SUBMIT_IMAGE,
                     payload: response.data['data']
                 })
             })

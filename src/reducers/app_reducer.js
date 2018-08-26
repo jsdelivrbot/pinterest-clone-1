@@ -1,6 +1,6 @@
 import {
     LOAD_ALL_POSTS,
-    SUBMIT_IMAGE_FROM_LOCAL,
+    SUBMIT_IMAGE,
     LOAD_USER_PROFILE,
     SUBMIT_IMAGE_ERROR,
     FILTER_USER_POSTS,
@@ -12,7 +12,7 @@ export default function(state = {allPostsList: [], loadingPosts: true, userPosts
     switch(action.type) {
         case LOAD_ALL_POSTS:
             return {...state, allPostsList: action.payload, loadingPosts: false};
-        case SUBMIT_IMAGE_FROM_LOCAL:
+        case SUBMIT_IMAGE:
             return {...state, allPostsList:[...state.allPostsList, action.payload], userPostsList: [...state.userPostsList, action.payload]};
         case LOAD_USER_PROFILE:
             return {...state, userPostsList: action.payload.posts, loadingUserProfile: false, userId: action.payload._id, userName: action.payload.email, userLikes: action.payload.userLikes};
@@ -41,22 +41,25 @@ export default function(state = {allPostsList: [], loadingPosts: true, userPosts
             }
         })
         return {...state, filteredUserPosts: updatedfilteredUserListWithError, allPostsList: updatedAllPostsListWithError};
+
         case SUBMIT_LIKE:
         let updatedAllPostsList = state.allPostsList.map((post, index) => {
-            if(post._id !== action.payload._id) {
+            if(post._id !== action.payload.updatedPost._id) {
                 return post;
             }
-            post.numLikes = action.payload.numLikes;
+            post.numLikes = action.payload.updatedPost.numLikes;
             return post;
         })
         let updatedFilteredUserPosts = state.filteredUserPosts.map((post, index) => {
-            if(post._id !== action.payload._id) {
+            if(post._id !== action.payload.updatedPost._id) {
                 return post;
             }
-                post.numLikes = action.payload.numLikes;
+                post.numLikes = action.payload.updatedPost.numLikes;
                 return post;
             })
-            return {...state, allPostsList: updatedAllPostsList, filteredUserPosts: updatedFilteredUserPosts};
+        let updatedUserLikes = action.payload.updatedUser.userLikes;
+
+            return {...state, allPostsList: updatedAllPostsList, filteredUserPosts: updatedFilteredUserPosts, userLikes: updatedUserLikes};
 
         case DELETE_POST:
         let updatedUserPostsList = state.userPostsList.filter((post, index) => {

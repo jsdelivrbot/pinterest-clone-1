@@ -10,7 +10,7 @@ export default (props) => {
                     <button type="submit" className="btn btn-default">Submit</button>
                 </div>
             </form>
-            <p className="help-block">Or</p>
+            <p className="help-block">Or Submit an image from your computer</p>
             <form onSubmit={props.submitLocal}>
                 <div className="form-group">
                     <label>Upload File From Personal Computer</label>

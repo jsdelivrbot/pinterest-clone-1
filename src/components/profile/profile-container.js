@@ -17,8 +17,6 @@ class ProfileContainer extends Component {
     componentWillMount() {
         this.props.loadUserProfile();
     }
-    
-    
     handleOnlineChange(e) {
         this.setState({ onlineImageValue: e.target.value });
     }
@@ -35,7 +33,7 @@ class ProfileContainer extends Component {
     }
  
     render() {
-        console.log(this.props.userPostsList)
+        console.log(this.props.userLikes)
         if(this.props.loadingUserProfile) {
             return (
                 <div>
@@ -53,18 +51,26 @@ class ProfileContainer extends Component {
                 )
                 
             })
-            let userLikes = this.props.userLikes.map((post, i) => {
-                console.log(post.post.poster)
-                return (
-                    <UserLike key={i}
-                          image={post.post.image}
-                          email={post.ownerOfPost}
-                          id={post.post._id}
-                          numLikes={post.post.numLikes}
-                          userId={post.post.poster} />
-                )
-                
-            })
+            let userLikes;
+            if(!this.props.userLikes.length) {
+
+                userLikes =[];
+            }
+            
+            else {
+               userLikes = this.props.userLikes.map((post, i) => {
+                    return (
+                        <UserLike key={i}
+                              image={post.post.image}
+                              email={post.ownerOfPost}
+                              id={post.post._id}
+                              numLikes={post.post.numLikes}
+                              userId={post.post.poster} />
+                    )
+                    
+                })
+            }
+           
             return (
                 <div>
                     <h1>Create a new post</h1>
